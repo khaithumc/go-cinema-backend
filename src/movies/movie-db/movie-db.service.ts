@@ -3,11 +3,10 @@ import { ConfigKey, ConfigService } from '../../config/config.service';
 import { catchError, concatMap, filter, ignoreElements, map, mapTo, mergeMap, tap, toArray } from 'rxjs/operators';
 import { defer, EMPTY, from, Observable, zip } from 'rxjs';
 import { Movie } from '../movie.schema';
-import { CreateDocumentDefinition, Model } from 'mongoose';
+import {CreateDocumentDefinition, Model } from 'mongoose';
 import { Category } from '../../categories/category.schema';
 import { MovieCategory } from '../movie-category.schema';
 import { Person } from '../../people/person.schema';
-import { fromArray } from 'rxjs/internal/observable/fromArray';
 import { InjectModel } from '@nestjs/mongoose';
 import * as fs from 'fs';
 import { ShowTime } from "../../show-times/show-time.schema";
@@ -53,8 +52,8 @@ export class MovieDbService {
         .pipe(
             map(res => res.results),
             tap(results => this.logger.debug(`Search ${query} ${page} ${year} -> ${results.length} items`)),
-            mergeMap(results => fromArray(results)),
-            map(movie => movie.id),
+            mergeMap(results => from(results)),
+            map(movie  => movie.id),
             concatMap(id =>
                 zip(this.detail(id), this.credits(id))
                     .pipe(

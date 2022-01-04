@@ -2,7 +2,7 @@ import { PaginationDto } from './pagination.dto';
 import { UserPayload } from '../auth/get-user.decorator';
 import { User } from '../users/user.schema';
 import { BadRequestException, ForbiddenException, Logger } from '@nestjs/common';
-//import { Theatre } from "../theatres/theatre.schema";
+import { Theatre } from 'src/theatres/theatre.schema';
 
 export const constants = {
   maxDistanceInMeters: 30_000,
@@ -68,23 +68,23 @@ export function checkCompletedLogin(userPayload: UserPayload): User {
   return entity;
 }
 
-// export function checkStaffPermission(userPayload: UserPayload, theatre_id: string | string | undefined) {
-//   const user = checkCompletedLogin(userPayload);
+export function checkStaffPermission(userPayload: UserPayload, theatre_id: string | string | undefined) {
+  const user = checkCompletedLogin(userPayload);
 
-//   if (user.role === 'STAFF') {
-//     if (!theatre_id) {
-//       throw new BadRequestException(`Missing theatre_id`);
-//     }
+  if (user.role === 'STAFF') {
+    if (!theatre_id) {
+      throw new BadRequestException(`Missing theatre_id`);
+    }
 
-//     const theatre: Theatre | undefined | null = user.theatre;
-//     if (!theatre) {
-//       throw new ForbiddenException(`Something was wrong!`);
-//     }
+    const theatre: Theatre | undefined | null = user.theatre;
+    if (!theatre) {
+      throw new ForbiddenException(`Something was wrong!`);
+    }
 
-//     if (theatre._id.toString() !== theatre_id) {
-//       throw new ForbiddenException(`Not a staff of ${theatre.name}!`);
-//     } else {
-//       Logger.debug(`${user.email} is staff of ${theatre.name}!`)
-//     }
-//   }
-// }
+    if (theatre._id.toString() !== theatre_id) {
+      throw new ForbiddenException(`Not a staff of ${theatre.name}!`);
+    } else {
+      Logger.debug(`${user.email} is staff of ${theatre.name}!`)
+    }
+  }
+}
