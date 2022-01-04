@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { FirebaseAuthenticationService } from '@aginix/nestjs-firebase-admin/dist';
-import * as admin from 'firebase-admin';
+import * as admin from 'firebase-admin/auth';
 import { User } from '../users/user.schema';
 import { UsersService } from '../users/users.service';
 import { RawUserPayload, UserPayload } from './get-user.decorator';
@@ -73,7 +73,7 @@ export class AuthGuard implements CanActivate {
    * @throws UnauthorizedException
    * @param request
    */
-  private async decodeToken(request: Request): Promise<admin.auth.DecodedIdToken> {
+  private async decodeToken(request: Request): Promise<admin.DecodedIdToken> {
     const authHeaders = request.headers.authorization;
     if (!authHeaders) {
       this.logger.error('Missing authHeaders');
@@ -85,11 +85,11 @@ export class AuthGuard implements CanActivate {
       this.logger.error('Missing token');
       throw new UnauthorizedException();
     }
-    // this.debugToken(token);
+    this.logger.debug(token);
 
-    let decodedIdToken: admin.auth.DecodedIdToken;
+    let decodedIdToken: admin.DecodedIdToken;
     try {
-      decodedIdToken = await this.firebaseAuth.verifyIdToken(token);
+      decodedIdToken = await admin.getAuth().verifyIdToken(token);
     } catch (e) {
       this.logger.error(`Error when verifying token: ${e}`);
       throw new UnauthorizedException('Error when verifying token');

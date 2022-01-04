@@ -8,9 +8,9 @@ import { ConfigModule } from './config/config.module';
 import { ConfigKey, ConfigService } from './config/config.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { MovieModule } from './movie/movie.module';
-import { TheatreModule } from './theatre/theatre.module';
 import { SocketModule } from './socket/socket.module';
+import { MoviesModule } from './movies/movies.module';
+import { TheatresModule } from './theatres/theatres.module';
 
 @Module({
   imports: [
@@ -23,20 +23,18 @@ import { SocketModule } from './socket/socket.module';
         })
       },
     ),
-    FirebaseAdminModule.forRootAsync(
-      {
-        useFactory: () => ({
-          credential: admin.credential.applicationDefault(),
-        }),
-      }
-    ),
+    FirebaseAdminModule.forRootAsync({
+      useFactory: () => ({
+        credential: admin.credential.applicationDefault(),
+      }),
+    }),
     ConfigModule,
     HttpModule,
     AuthModule,
     UsersModule,
-    MovieModule,
-    TheatreModule,
     SocketModule,
+    MoviesModule,
+    TheatresModule,
   ],
   controllers: [AppController],
   providers: [AppService],
