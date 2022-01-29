@@ -155,19 +155,19 @@ export class MovieDbService {
     return people;
   }
 
-  private async saveMovieCategory(saved: Movie, categories: Category[]) {
-    for (const category of categories) {
-      const movieCategory: Partial<Pick<MovieCategory, keyof MovieCategory>> = {
-        'category_id': category._id,
-        'movie_id': saved._id,
-      };
-      await this.movieCategoryModel.findOneAndUpdate(
-          movieCategory,
-          movieCategory,
-          { upsert: true }
-      );
-    }
-  }
+  // private async saveMovieCategory(saved: Movie, categories: Category[]) {
+  //   for (const category of categories) {
+  //     const movieCategory: Partial<Pick<MovieCategory, keyof MovieCategory>> = {
+  //       'category_id': category._id,
+  //       'movie_id': saved._id,
+  //     };
+  //     await this.movieCategoryModel.findOneAndUpdate(
+  //         movieCategory,
+  //         movieCategory,
+  //         { upsert: true }
+  //     );
+  //   }
+  // }
 
   private async saveMovieDetail(v: MovieDetailResponseResult, c: MovieCreditsResponseResult) {
     this.logger.debug('Start save movie detail');
@@ -202,7 +202,7 @@ export class MovieDbService {
     const saved = await this.movieModel.create(movieDoc);
 
     const categories = await this.getCategories(v.genres);
-    await this.saveMovieCategory(saved, categories);
+    //await this.saveMovieCategory(saved, categories);
 
     this.logger.debug('End save movie detail');
   };
@@ -292,7 +292,7 @@ export class MovieDbService {
           await new Promise(((resolve, reject) => {
             fs.writeFile('./movie.json', JSON.stringify(array), {}, (e) => {
               if (e) reject(e)
-              else resolve();
+              else resolve(e);
             });
           }));
 
