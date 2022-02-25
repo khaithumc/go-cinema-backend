@@ -85,7 +85,7 @@ export class AuthGuard implements CanActivate {
       this.logger.error('Missing token');
       throw new UnauthorizedException();
     }
-    this.logger.debug(token);
+    this.logger.debug('TOKEN' + token);
 
     let decodedIdToken: admin.DecodedIdToken;
     try {

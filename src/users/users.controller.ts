@@ -80,12 +80,12 @@ import {
         private readonly usersService: UsersService,
     ) {}
   
-    // @ApiOperation({ summary: 'PRIVATE' })
-    // @Roles('ADMIN')
-    // @Post('seed')
-    // seedUsers() {
-    //   return this.usersService.seedUsers();
-    // }
+    @ApiOperation({ summary: 'PRIVATE' })
+    @Roles('ADMIN')
+    @Post('seed')
+    seedUsers() {
+      return this.usersService.seedUsers();
+    }
   
     @ForAdmin()
     @Roles('ADMIN')
@@ -133,16 +133,16 @@ import {
       return this.usersService.toUserRole(uid);
     }
   
-    // @ForAdmin()
-    // @Roles('ADMIN')
-    // @Put('to_staff_role/:uid')
-    // toStaffRole(
-    //     @Param('uid') uid: string,
-    //     @Body('theatre_id') theatre_id: string,
-    // ): Promise<User> {
-    //   if (!theatre_id) {
-    //     throw new BadRequestException(`Require theatre_id`);
-    //   }
-    //   return this.usersService.toStaffRole(uid, theatre_id);
-    // }
+    @ForAdmin()
+    @Roles('ADMIN')
+    @Put('to_staff_role/:uid')
+    toStaffRole(
+        @Param('uid') uid: string,
+        @Body('theatre_id') theatre_id: string,
+    ): Promise<User> {
+      if (!theatre_id) {
+        throw new BadRequestException(`Require theatre_id`);
+      }
+      return this.usersService.toStaffRole(uid, theatre_id);
+    }
   }

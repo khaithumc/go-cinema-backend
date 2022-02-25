@@ -21,11 +21,11 @@ import { PromotionsService } from '../promotions/promotions.service';
 import { Promotion } from '../promotions/promotion.schema';
 import { User } from '../users/user.schema';
 import { NotificationsService } from '../notifications/notifications.service';
-import { MailerService } from '@nestjs-modules/mailer';
 import { ShowTime } from '../show-times/show-time.schema';
 import { Movie } from '../movies/movie.schema';
 import { generateQRCode } from '../common/qrcode';
 import { PaginationDto } from '../common/pagination.dto';
+import { MailerService } from '@nestjs-modules/mailer';
 
 export type CreatedReservation =
     Omit<Reservation, 'show_time'>
@@ -132,13 +132,13 @@ export class ReservationsService {
               subject: `Tickets for movie: ${reservation.show_time.movie.title}`,
               template: 'mail',
               context: { reservation: reservation.toJSON(), tickets: tickets.map(t => t.toJSON()) },
-              // attachments: [
-              //   {
-              //     filename: 'qrcode.png',
-              //     content: qrcode.split('base64,')[1],
-              //     encoding: 'base64'
-              //   } as any,
-              // ]
+              attachments: [
+                {
+                  filename: 'qrcode.png',
+                  content: qrcode.split('base64,')[1],
+                  encoding: 'base64'
+                } as any,
+              ]
             }
         )
     ).then(() => this.logger.debug(`Send mail success`))
