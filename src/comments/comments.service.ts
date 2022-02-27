@@ -255,7 +255,7 @@ export class CommentsService {
     );
     this.logger.debug(`[DONE] updated ${movie._id} ${total_rate}, ${rate_star}`);
 
-    return await (await saved.populate('user'));
+    return await saved.populate('user').execPopulate();
   }
 
   async deleteComment(id: string): Promise<Comment> {

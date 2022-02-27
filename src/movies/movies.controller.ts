@@ -30,7 +30,7 @@ export class MoviesController {
 
     return range(0, 10)
         .pipe(
-            map(i => 2020 - i),
+            map(i => 2022 - i),
             concatMap(year =>
                 range(1, 20).pipe(map(page => ({ page, year })))
             ),
@@ -114,8 +114,8 @@ export class AdminMoviesController {
     return this.moviesService.addMovie(dto);
   }
 
-  @ForAdmin()
-  @Roles('ADMIN', 'STAFF')
+  //@ForAdmin()
+  @Roles('ADMIN', 'STAFF', 'USER')
   @Get('search')
   searchByTitle(
       @Query('title') title: string,
